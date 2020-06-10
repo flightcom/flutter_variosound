@@ -55,7 +55,8 @@ class _MyAppState extends State<MyApp> {
           child: Column(
 						mainAxisAlignment: MainAxisAlignment.center,
 						children: [
-							Text('Running on: $_platformVersion\n'),
+							
+							Text('Speed: $_speed\n'),
 							RaisedButton(
 								onPressed: () => Variosound.stop(),
 								child: Text('STOP'),
