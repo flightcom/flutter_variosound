@@ -1,6 +1,8 @@
 # variosound
 
-A new flutter plugin project.
+Flutter plugin to generate the sound of a variometer.
+
+⚠️ ONLY FOR ANDROID AT THE MOMENT
 
 ## Getting Started
 
@@ -12,3 +14,12 @@ Android and/or iOS.
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
+
+
+## API
+
+| Method   | Action        | Parameters   |
+| -------- | ------------- | ------------ |
+| play     | Start playing |              |
+| stop     | Stop playing  |              |
+| setSpeed | Change speed  | double speed |
