@@ -7,7 +7,6 @@ public class AudioStreamLooper {
     // NOTE: this is hardcoded for simplicity,
     // you should get this value from AudioManager since it's device dependent
     public static final int SAMPLE_RATE = 44100;
-    public static final int CHANNELS = 1;
 
     private static final double K = 2.0 * Math.PI / SAMPLE_RATE;
 
@@ -59,16 +58,20 @@ public class AudioStreamLooper {
     }
 
     public short[] getSampleBuffer(boolean full){
-        short[] sampleBuffer = new short[_bufferSize];
+        short[] sampleBuffer = new short[_bufferSize*2];
 
+        int k = 0;
         for(int i = 0; i < _bufferSize; i++){
             updateCounters();
 
             if (i < _bufferSize/2 || full) {
-                sampleBuffer[i] = genSineSample();
+                sampleBuffer[k] = genSineSample();
+                sampleBuffer[k+1] = genSineSample();
             } else {
-                sampleBuffer[i] = 0;
+                sampleBuffer[k] = 0;
+                sampleBuffer[k+1] = 0;
             }
+            k += 2;
         }
 
         return sampleBuffer;

@@ -29,7 +29,7 @@ public class ToneGenerator {
     public void setSpeed(double v) {
         speed = v;
         double frequency = 3 * Math.pow(v + 10, 2) + 200;
-        duration = (int) (v >= 0.0 ? 200 + 400 / (v + 1) : 1000);
+        duration = (int) (v >= 0.0 ? 200 + 400 / (v + 1) : 200);
         Log.v("TONE", "Duration: " + String.valueOf(duration));
         Log.v("FREQ", "Frequency: " + String.valueOf(frequency));
         looper.setFrequency(frequency);
@@ -56,12 +56,14 @@ public class ToneGenerator {
         mAudioTrack = new AudioTrack(
             AudioManager.STREAM_MUSIC,
             AudioStreamLooper.SAMPLE_RATE,
-            AudioFormat.CHANNEL_OUT_MONO,
+            // AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.CHANNEL_OUT_STEREO,
             AudioFormat.ENCODING_PCM_16BIT,
             mBufferSize,
             AudioTrack.MODE_STREAM);
 
         looper.setBufferSize(mBufferSize);
+        this.setSpeed(0);
     }
 
     private synchronized void resumePlay(){
@@ -82,9 +84,7 @@ public class ToneGenerator {
         while (shouldPlay) {
             short[] buffer = looper.getSampleBuffer(speed < 0);
 
-            for(int i = 0; i < mBufferSize; i++){
-                mAudioTrack.write(buffer, i, 1);
-            }
+            mAudioTrack.write(buffer, 0, buffer.length);
         }
     }
 
@@ -133,10 +133,6 @@ public class ToneGenerator {
 
         return false;
     }
-
-    // public void setAudioTrackDuration() {
-    //     mAudioTrack.
-    // }
 
     public void release() {
         mAudioTrack.release();
