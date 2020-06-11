@@ -23,3 +23,14 @@ samples, guidance on mobile development, and a full API reference.
 | play     | Start playing |              |
 | stop     | Stop playing  |              |
 | setSpeed | Change speed  | double speed |
+
+## Usage
+
+```dart
+// To init the Audio stream - speed is set at zero initially
+Variosound.play();
+
+// Pass the speed (in meter per second) to change the sound frequency, duration and duty
+Variosound.setSpeed(3.0);
+
+```
