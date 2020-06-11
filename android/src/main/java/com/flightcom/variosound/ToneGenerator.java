@@ -30,8 +30,6 @@ public class ToneGenerator {
         speed = v;
         double frequency = 3 * Math.pow(v + 10, 2) + 200;
         duration = (int) (v >= 0.0 ? 200 + 400 / (v + 1) : 200);
-        Log.v("TONE", "Duration: " + String.valueOf(duration));
-        Log.v("FREQ", "Frequency: " + String.valueOf(frequency));
         looper.setFrequency(frequency);
 
         mBufferSize = AudioStreamLooper.SAMPLE_RATE * duration / 1000;
@@ -78,7 +76,7 @@ public class ToneGenerator {
 
     private void play(){
 
-        Log.v(LOG_TAG, "starting tone");
+        Log.v(LOG_TAG, "Starting tone");
         looper.reset();
 
         while (shouldPlay) {
