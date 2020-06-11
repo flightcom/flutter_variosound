@@ -54,14 +54,14 @@ public class ToneGenerator {
         mAudioTrack = new AudioTrack(
             AudioManager.STREAM_MUSIC,
             AudioStreamLooper.SAMPLE_RATE,
-            // AudioFormat.CHANNEL_OUT_MONO,
-            AudioFormat.CHANNEL_OUT_STEREO,
+            AudioFormat.CHANNEL_OUT_MONO,
+            // AudioFormat.CHANNEL_OUT_STEREO,
             AudioFormat.ENCODING_PCM_16BIT,
             mBufferSize,
-            AudioTrack.MODE_STREAM);
+            AudioTrack.MODE_STREAM
+        );
 
         looper.setBufferSize(mBufferSize);
-        this.setSpeed(0);
     }
 
     private synchronized void resumePlay(){
@@ -82,7 +82,11 @@ public class ToneGenerator {
         while (shouldPlay) {
             short[] buffer = looper.getSampleBuffer(speed < 0);
 
-            mAudioTrack.write(buffer, 0, buffer.length);
+            for(int i = 0; i < mBufferSize; i++){
+                mAudioTrack.write(buffer, i, 1);
+            }
+            // mAudioTrack.write(buffer, 0, buffer.length);
+
         }
     }
 

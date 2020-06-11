@@ -16,7 +16,6 @@ public class AudioStreamLooper {
 
     private double _frequency = 440.0;
     private int _bufferSize = 8192;
-    private int _waveformIndex = 0; // 0 sine, 1 saw, 2 square
 
     public void setBufferSize(int v){
         _bufferSize = v;
@@ -43,9 +42,16 @@ public class AudioStreamLooper {
 
     private void updateCounters(){
         f += (_frequency - f) / 4096.0;
-        l += (16384.0 - l) / 4096.0;
+        l += (16384.0 - 3*l) / 4096.0;
         q += (q < Math.PI) ? f * K : (f * K) - (2.0 * Math.PI);
     }
+
+    private void updateCounters2(){
+        f += (_frequency - f) / 4096.0;
+        l -= 3*l / 4096.0;
+        q += (q < Math.PI) ? f * K : (f * K) - (2.0 * Math.PI);
+    }
+
 
     private short genSineSample(){
         return (short) Math.round(Math.sin(q) * l);
@@ -58,20 +64,22 @@ public class AudioStreamLooper {
     }
 
     public short[] getSampleBuffer(boolean full){
-        short[] sampleBuffer = new short[_bufferSize*2];
+        // short[] sampleBuffer = new short[_bufferSize*2];
+        short[] sampleBuffer = new short[_bufferSize];
 
         int k = 0;
         for(int i = 0; i < _bufferSize; i++){
-            updateCounters();
 
             if (i < _bufferSize/2 || full) {
-                sampleBuffer[k] = genSineSample();
-                sampleBuffer[k+1] = genSineSample();
+                updateCounters();
             } else {
-                sampleBuffer[k] = 0;
-                sampleBuffer[k+1] = 0;
+                updateCounters2();
             }
-            k += 2;
+            short val = genSineSample();
+            sampleBuffer[k] = val;
+            // sampleBuffer[k+1] = val;
+            // k += 2;
+            k += 1;
         }
 
         return sampleBuffer;
