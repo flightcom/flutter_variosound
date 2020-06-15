@@ -16,6 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
 	double _speed = 0;
+	bool _playing = false;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       platformVersion = await Variosound.platformVersion;
+			getPlaying();
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -43,6 +45,16 @@ class _MyAppState extends State<MyApp> {
       _platformVersion = platformVersion;
     });
   }
+
+	void getPlaying() {
+		bool playing;
+		Timer.periodic(Duration(seconds: 1), (Timer t) async {
+			playing = await Variosound.isPlaying;
+			setState(() {
+				_playing = playing;
+			});
+		});
+	}
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +97,8 @@ class _MyAppState extends State<MyApp> {
 									Variosound.setSpeed(_speed);
 								},
 								child: Text('RESET'),
-							)
+							),
+							Text(_playing.toString())
 						],),
         ),
       ),

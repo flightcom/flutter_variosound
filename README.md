@@ -18,11 +18,12 @@ samples, guidance on mobile development, and a full API reference.
 
 ## API
 
-| Method   | Action        | Parameters   |
-| -------- | ------------- | ------------ |
-| play     | Start playing |              |
-| stop     | Stop playing  |              |
-| setSpeed | Change speed  | double speed |
+| Method    | Return value | Parameters   |
+| --------- | ------------ | ------------ |
+| play      | void         |              |
+| stop      | void         |              |
+| setSpeed  | void         | double speed |
+| isPlaying | boolean      |              |
 
 ## Usage
 
@@ -32,5 +33,11 @@ Variosound.play();
 
 // Pass the speed (in meter per second) to change the sound frequency, duration and duty
 Variosound.setSpeed(3.0);
+
+// Check if playing (for thresholds for example)
+Variosound.isPlaying()
+
+// Stop playing
+Variosound.stop();
 
 ```

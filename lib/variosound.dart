@@ -22,6 +22,10 @@ class Variosound {
 		_channel.invokeMethod('stop');
 	}
 
+	static Future<bool> get isPlaying {
+		return _channel.invokeMethod('isPlaying');
+	}
+
 	static void setSpeed(double speed) {
 		_channel.invokeMethod('setSpeed', <String, dynamic>{ 'speed': speed });
 	}
