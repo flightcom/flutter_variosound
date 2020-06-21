@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-const MethodChannel _variosoundMethodChannel =
-    MethodChannel('com.flightcom.variosound');
-
-
 class Variosound {
   static const MethodChannel _channel =
       const MethodChannel('variosound');
