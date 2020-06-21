@@ -82,10 +82,10 @@ public class ToneGenerator {
         while (shouldPlay) {
             short[] buffer = looper.getSampleBuffer(speed < 0);
 
-            for(int i = 0; i < mBufferSize; i++){
-                mAudioTrack.write(buffer, i, 1);
-            }
-            // mAudioTrack.write(buffer, 0, buffer.length);
+            // for(int i = 0; i < mBufferSize; i++){
+            //     mAudioTrack.write(buffer, i, 1);
+            // }
+            mAudioTrack.write(buffer, 0, buffer.length);
 
         }
     }

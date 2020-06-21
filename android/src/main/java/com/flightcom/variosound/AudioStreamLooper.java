@@ -64,7 +64,6 @@ public class AudioStreamLooper {
     }
 
     public short[] getSampleBuffer(boolean full){
-        // short[] sampleBuffer = new short[_bufferSize*2];
         short[] sampleBuffer = new short[_bufferSize];
 
         for(int i = 0; i < _bufferSize; i++){
