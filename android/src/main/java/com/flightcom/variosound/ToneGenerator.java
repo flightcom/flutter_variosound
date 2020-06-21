@@ -33,7 +33,7 @@ public class ToneGenerator {
         looper.setFrequency(frequency);
 
         mBufferSize = AudioStreamLooper.SAMPLE_RATE * duration / 1000;
-        mAudioTrack.setBufferSizeInFrames(mBufferSize);
+        // mAudioTrack.setBufferSizeInFrames(mBufferSize);
         looper.setBufferSize(mBufferSize);
     }
 

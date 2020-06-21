@@ -67,7 +67,6 @@ public class AudioStreamLooper {
         // short[] sampleBuffer = new short[_bufferSize*2];
         short[] sampleBuffer = new short[_bufferSize];
 
-        int k = 0;
         for(int i = 0; i < _bufferSize; i++){
 
             if (i < _bufferSize/2 || full) {
@@ -76,10 +75,7 @@ public class AudioStreamLooper {
                 updateCounters2();
             }
             short val = genSineSample();
-            sampleBuffer[k] = val;
-            // sampleBuffer[k+1] = val;
-            // k += 2;
-            k += 1;
+            sampleBuffer[i] = val;
         }
 
         return sampleBuffer;
