@@ -74,7 +74,9 @@ public class AudioStreamLooper {
                 updateCounters2();
             }
             short val = genSineSample();
-            sampleBuffer[i] = val;
+            if (i < sampleBuffer.length) {
+                sampleBuffer[i] = val;
+            }
         }
 
         return sampleBuffer;
