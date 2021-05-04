@@ -19,7 +19,7 @@ class Variosound {
 	}
 
 	static Future<bool> get isPlaying {
-		return _channel.invokeMethod('isPlaying');
+		return _channel.invokeMethod('isPlaying') as Future<bool>;
 	}
 
 	static void setSpeed(double speed) {
