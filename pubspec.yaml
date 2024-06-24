@@ -31,6 +31,7 @@ flutter:
         package: com.flightcom.variosound
         pluginClass: VariosoundPlugin
       ios:
+        package: app.flightcom.variosound
         pluginClass: VariosoundPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
