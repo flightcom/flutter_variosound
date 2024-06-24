@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - variosound (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - variosound (from `.symlinks/plugins/variosound/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  variosound:
+    :path: ".symlinks/plugins/variosound/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  variosound: 96867eb8484e871e2e9580d5284ccb8110127e91
+
+PODFILE CHECKSUM: 18c14f6622127f3cfe224deb43624eb16f14871c
+
+COCOAPODS: 1.15.2
