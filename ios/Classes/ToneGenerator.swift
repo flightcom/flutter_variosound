@@ -17,6 +17,17 @@ class ToneGenerator {
     init() {
         audioFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)!
 
+        // Play through the .playback category so the vario keeps sounding when
+        // the app is backgrounded or the screen is locked (with the app's
+        // "audio" UIBackgroundMode). Mix with other audio so music keeps going.
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try session.setActive(true)
+        } catch {
+            print("Could not configure the audio session: \(error)")
+        }
+
         audioEngine.attach(audioPlayerNode)
         audioEngine.connect(audioPlayerNode, to: audioEngine.mainMixerNode, format: audioFormat)
         do {
