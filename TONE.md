@@ -40,6 +40,22 @@ The **silent dead-band around 0** is handled by the app (it only calls
 `play()`/`stop()` outside the user's climb/sink thresholds), so the generator
 itself always produces a tone while playing.
 
+## Weak-lift detector ("zérotage")
+
+When the air rises just enough to offset the glider's own sink, the net `vz`
+sits near zero — below the climb threshold — yet it marks usable lift. The app
+detects this band (from a floor up to the climb threshold) and calls
+`setWeakLift(true)`; the generator then **overrides** the sign-based tone with a
+soft, slow, distinct blip (so it is never mistaken for a climb or a sink). Pitch
+still follows `f(vz)`, so it rises gently as you approach climbing. The app
+calls `setWeakLift(false)` outside the band.
+
+| Constant    | Value | Meaning                                   |
+|-------------|-------|-------------------------------------------|
+| `WEAK_CAD`  | 1.2   | beeps/s (fixed, slow)                     |
+| `WEAK_DUTY` | 0.22  | on-fraction (short blips)                 |
+| `WEAK_AMP`  | 0.28  | output level (softer than the climb tone) |
+
 ## Constants (tune by ear)
 
 | Constant      | Value  | Meaning                                   |

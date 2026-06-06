@@ -31,6 +31,9 @@ public class VariosoundPlugin implements FlutterPlugin, MethodCallHandler {
     } else if (call.method.equals("setSpeed")) {
       double speed = (double) call.argument("speed");
       tn.setSpeed(speed);
+    } else if (call.method.equals("setWeakLift")) {
+      boolean weak = (boolean) call.argument("weak");
+      tn.setWeakLift(weak);
     } else if (call.method.equals("play")) {
       if (!tn.playing()) {
           tn.startPlayback();

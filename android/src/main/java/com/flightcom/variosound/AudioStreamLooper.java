@@ -28,13 +28,27 @@ public class AudioStreamLooper {
     static final double VZ_SMOOTH = 0.0006;  // per-sample one-pole
     static final double EDGE_S = 0.006;      // attack/release seconds (anti-click)
 
+    // ---- Weak-lift detector ("zérotage") ----
+    // A soft, slow, distinct blip for when the air is lifting just enough to
+    // offset the glider's own sink (net vz near zero, below the climb
+    // threshold). The app turns it on inside that band; see TONE.md.
+    static final double WEAK_CAD = 1.2;      // beeps/s (fixed, slow)
+    static final double WEAK_DUTY = 0.22;    // short on-fraction
+    static final double WEAK_AMP = 0.28;     // softer than the climb tone
+
     private volatile double targetSpeed = 0.0;
+    private volatile boolean weakLift = false;
     private double currentSpeed = 0.0;
     private double phase = 0.0;     // sine phase, radians
     private double beepClock = 0.0; // seconds into the current beep cycle
 
     public void setSpeed(double v) {
         targetSpeed = v;
+    }
+
+    /** Enables the soft weak-lift sound, overriding the climb/sink tone. */
+    public void setWeakLift(boolean w) {
+        weakLift = w;
     }
 
     /** Resets the generator for a clean (click-free) start from silence. */
@@ -54,7 +68,16 @@ public class AudioStreamLooper {
             if (phase >= TWO_PI) phase -= TWO_PI;
 
             double amp;
-            if (currentSpeed < 0.0) {
+            double level = AMPLITUDE;
+            if (weakLift) {
+                // Weak lift: soft, slow blip, overriding the sign-based tone.
+                double period = 1.0 / WEAK_CAD;
+                double onTime = period * WEAK_DUTY;
+                beepClock += 1.0 / SAMPLE_RATE;
+                if (beepClock >= period) beepClock -= period;
+                amp = envelope(beepClock, onTime);
+                level = WEAK_AMP;
+            } else if (currentSpeed < 0.0) {
                 // Sink: continuous tone.
                 amp = 1.0;
                 beepClock = 0.0;
@@ -72,7 +95,7 @@ public class AudioStreamLooper {
                 amp = envelope(beepClock, onTime);
             }
 
-            double sample = Math.sin(phase) * amp * AMPLITUDE;
+            double sample = Math.sin(phase) * amp * level;
             buffer[i] = (short) Math.round(clamp(sample, -1.0, 1.0) * 32767.0);
         }
     }

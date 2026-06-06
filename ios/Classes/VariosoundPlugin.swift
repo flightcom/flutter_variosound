@@ -18,6 +18,10 @@ public class VariosoundPlugin: NSObject, FlutterPlugin {
             if let args = call.arguments as? [String: Any], let speed = args["speed"] as? Double {
                 toneGenerator?.setSpeed(speed: speed)
             }
+        case "setWeakLift":
+            if let args = call.arguments as? [String: Any], let weak = args["weak"] as? Bool {
+                toneGenerator?.setWeakLift(weak: weak)
+            }
         case "play":
             if !(toneGenerator?.isPlaying() ?? false) {
                 toneGenerator?.startPlayback()

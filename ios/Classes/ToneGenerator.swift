@@ -48,6 +48,10 @@ class ToneGenerator {
         looper.setSpeed(speed)
     }
 
+    func setWeakLift(weak: Bool) {
+        looper.setWeakLift(weak)
+    }
+
     func startPlayback() {
         guard !playingStatus else { return }
         playingStatus = true

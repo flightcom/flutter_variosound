@@ -26,6 +26,10 @@ public class ToneGenerator {
         looper.setSpeed(v);
     }
 
+    public void setWeakLift(boolean w) {
+        looper.setWeakLift(w);
+    }
+
     private void initAudioTrack() {
         int minBuffer = AudioTrack.getMinBufferSize(
                 AudioStreamLooper.SAMPLE_RATE,

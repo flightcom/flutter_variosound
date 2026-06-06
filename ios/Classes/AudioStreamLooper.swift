@@ -24,13 +24,24 @@ class AudioStreamLooper {
     private let vzSmooth = 0.0006   // per-sample one-pole
     private let edgeS = 0.006       // attack/release seconds (anti-click)
 
+    // ---- Weak-lift detector ("zérotage"), mirror the Java constants ----
+    private let weakCad = 1.2       // beeps/s (fixed, slow)
+    private let weakDuty = 0.22     // short on-fraction
+    private let weakAmp = 0.28      // softer than the climb tone
+
     private var targetSpeed = 0.0
+    private var weakLift = false
     private var currentSpeed = 0.0
     private var phase = 0.0     // sine phase, radians
     private var beepClock = 0.0 // seconds into the current beep cycle
 
     func setSpeed(_ v: Double) {
         targetSpeed = v
+    }
+
+    /// Enables the soft weak-lift sound, overriding the climb/sink tone.
+    func setWeakLift(_ w: Bool) {
+        weakLift = w
     }
 
     /// Resets the generator for a clean (click-free) start from silence.
@@ -50,7 +61,16 @@ class AudioStreamLooper {
             if phase >= twoPi { phase -= twoPi }
 
             var amp: Double
-            if currentSpeed < 0.0 {
+            var level = amplitude
+            if weakLift {
+                // Weak lift: soft, slow blip, overriding the sign-based tone.
+                let period = 1.0 / weakCad
+                let onTime = period * weakDuty
+                beepClock += 1.0 / AudioStreamLooper.sampleRate
+                if beepClock >= period { beepClock -= period }
+                amp = envelope(beepClock, onTime)
+                level = weakAmp
+            } else if currentSpeed < 0.0 {
                 // Sink: continuous tone.
                 amp = 1.0
                 beepClock = 0.0
@@ -66,7 +86,7 @@ class AudioStreamLooper {
                 amp = envelope(beepClock, onTime)
             }
 
-            let sample = sin(phase) * amp * amplitude
+            let sample = sin(phase) * amp * level
             buffer[i] = Float(clamp(sample, -1.0, 1.0))
         }
     }
